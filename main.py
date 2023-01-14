@@ -6,13 +6,15 @@ from random import *
 #from mathproblems import mathlist
 root = Tk()
 root.geometry("270x480")
-root.title('hannaxia')
+root.title('Bubble Cat')
 s = Canvas(root, width = 270, height = 480, bg='#FFF7EB')
 s.pack(fill = BOTH, expand=True)
 
 bg = ImageTk.PhotoImage(file = 'image/bg.png')
 logo = ImageTk.PhotoImage(file = 'image/logo.png')
 s.create_image(130, 140, image = (logo), anchor= CENTER)
+
+point = 
 
 def home():
 	global startBtn, HTPBtn
@@ -59,7 +61,7 @@ def howToPlay():
 #   print (question)
 
 def game():
-	global startBtn, HTPBtn
+	global startBtn, HTPBtn, trigBtn
 	s.delete("all")
 	startBtn.destroy()
 	HTPBtn.destroy()
@@ -70,19 +72,36 @@ def game():
 	trigBtn.place(x=135, y=270, height=21, width=150, anchor=CENTER)
 	
 def trig():
-	trigquestions = ["In triangle PQR, PR = 20 cm, < Q = 90°, < R = 41°. Find RQ to the narest tenth of a cm", "From the top of a tower, the angle of depression to the tip of the tower's shadow is 88°. The shadow is 19.5m long. How tall is the tower?(m)"]
-	triganswers = ["13.1", "558.4"]
-	randomnum = randint(0, 1)
+	global answer, answerWindow, triga
+	
+	s.delete("all")
+	trigBtn.destroy()
+	
+	trigquestions = ["In triangle PQR, PR = 20 cm, \n< Q = 90°, < R = 41°. \nFind RQ to the nearest cm", "From the top of a tower, the \nangle of depression to the tip \nof the tower's shadow is 88°. \nThe shadow is 19.5m long. \nHow tall is the tower?\n(nearest m)", "A road has a 10% gradient,\nmeaning it rises 10m for \nevery 100m of horizontal \ndistance. What is the angle of \ninclination of the road, \nto the nearest degree?", "A 25 foot tall flagpole casts a \n42 foot shadow. What is the \nangle that the sun hits the \nflagpole?(Round to nearest \nangle)"]
+	triganswers = [13, 558, 6, 59]
+	randomnum = randint(0, 3)
 	trigq = trigquestions[randomnum]
 	triga = triganswers[randomnum]
 
-	trigbox = s.create_polygon(50, 280, 220, 280, 220, 340, 50, 340, width = 15, fill = "Brown", outline = "Yellow")
-	question = s.create_text(80, 290, text = trigq, anchor = NW, fill = "Black", font = "arial 8")
+	treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
+	question = s.create_text(64, 275, text = trigq, anchor = NW, fill = "white", font = "arial 7")
 
-	answer = Entry(root, font=("Helvetica", 25), width=17, fg="#000000", borderwidth=0)
-	answer.insert(0, "enter your answer here")
-	answerWindow = s.create_window(110, 100, anchor="nw", window=answer)
-	game()
+	treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
+
+	answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
+	answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
+
+	def check():
+		global answer, answerWindow, triga
+		answerUser = answer.get()
+		
+		if int(answerUser) == triga:
+			wave2 = s.create_polygon(-100, 350, 0, 600, 300, 480, 350, 330, 75, 450, smooth = TRUE, fill = "#627ABD")
+		
+	enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
+	enterBtn.pack()
+	enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
+
 def quad():
 	return
 def exponents():
