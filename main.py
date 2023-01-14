@@ -59,7 +59,7 @@ def howToPlay():
 #   print (question)
 
 def game():
-	global startBtn, HTPBtn
+	global startBtn, HTPBtn, trigBtn
 	s.delete("all")
 	startBtn.destroy()
 	HTPBtn.destroy()
@@ -70,6 +70,9 @@ def game():
 	trigBtn.place(x=135, y=270, height=21, width=150, anchor=CENTER)
 	
 def trig():
+	global startBtn, HTPBtn, trigBtn
+	s.delete("all")
+	trigBtn.destroy()
 	trigquestions = ["In triangle PQR, PR = 20 cm, < Q = 90°, < R = 41°. Find RQ to the narest tenth of a cm", "From the top of a tower, the angle of depression to the tip of the tower's shadow is 88°. The shadow is 19.5m long. How tall is the tower?(m)"]
 	triganswers = ["13.1", "558.4"]
 	randomnum = randint(0, 1)
