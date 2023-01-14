@@ -10,15 +10,18 @@ root.title('Bubble Cat')
 s = Canvas(root, width = 270, height = 480, bg='#FFF7EB')
 s.pack(fill = BOTH, expand=True)
 
-bg = ImageTk.PhotoImage(file = 'image/bg.png')
-logo = ImageTk.PhotoImage(file = 'image/logo.png')
-s.create_image(130, 140, image = (logo), anchor= CENTER)
+retryInt = 0
 
-point = 
+wrong = ImageTk.PhotoImage(file = 'image/wrong.png')
+bg = ImageTk.PhotoImage(file = 'image/bg.png')
+retryBg = ImageTk.PhotoImage(file = 'image/congrats+retry.png')
+logo = ImageTk.PhotoImage(file = 'image/logo.png')
+s.create_image(130, 140, image = (logo), anchor = CENTER)
+
+point = 0
 
 def home():
-	global startBtn, HTPBtn
-	
+	global startBtn, HTPBtn, point, retryBtn
 	startBtn = Button(root, text = "Start", command = game, bg="#93AAE8", font="Arial 10", anchor = CENTER)
 	startBtn.pack()
 	startBtn.place(x=135, y=300,height=21,width=150,anchor=CENTER)
@@ -33,7 +36,7 @@ def home():
 	wave2 = s.create_polygon(-100, 350, 0, 600, 300, 480, 350, 330, 75, 450, smooth = TRUE, fill = "#627ABD")
 
 	bubble1 = s.create_oval(0, 400, 50, 450, fill = "", outline = "white")
-
+	
 
 def howToPlay():
 	global startBtn, HTPBtn
@@ -56,72 +59,306 @@ def howToPlay():
 	WCTtab = s.create_polygon(40, 350, 230, 350, 230, 390, 40, 390, fill = "white", outline = "black")
 	WCTtext = s.create_text(55, 360, text = "Bubble Cat was created by Elaine Zhu, \nBella Kim, Amy Zhou and Jasmine Xu!", anchor = NW, fill = "black", font = "arial 6")
 
-# def giveQuestion():
-#   question = random.choice(mathproblems)
-#   print (question)
+	startBtn = Button(root, text = "Start", command = game, bg="#93AAE8", font="Arial 10", anchor = CENTER)
+	startBtn.pack()
+	startBtn.place(x=135, y=400,height=21,width=150,anchor=CENTER)
+	
 
 def game():
-	global startBtn, HTPBtn, trigBtn
+	global startBtn, HTPBtn, trigBtn, quadBtn, point, retryBtn, multiBtn, exponentsBtn, factoringBtn, rootsBtn, retryInt
+	point = 0
 	s.delete("all")
 	startBtn.destroy()
+	startBtn.destroy()
 	HTPBtn.destroy()
-	
+
+	if retryInt == 1:
+		retryBtn.destroy()
+
 	s.create_image(0, 0, image = (bg), anchor= NW)
-	trigBtn = Button(root, text = "Trignometry", command = trig, bg="#a5b8ed", font="Arial 10", anchor = CENTER)
+	
+	spacing = 25
+
+	for x in range(0, 800, spacing): 
+		s.create_line(x, 25, x, 600, fill="white")
+		s.create_text(x, 5, text=str(x), font="Times 9", anchor = N, fill = "black")
+	
+	for y in range(0, 600, spacing):
+		s.create_line(25, y, 800, y, fill="white")
+		s.create_text(5, y, text=str(y), font="Times 9", anchor = W, fill = "black")
+
+	trigBtn = Button(root, text = "Trignometry", command = trig, bg="#a5b8ed", font="Arial 7", anchor = CENTER)
 	trigBtn.pack()
-	trigBtn.place(x=135, y=270, height=21, width=150, anchor=CENTER)
-	
+	trigBtn.place(x=70, y=160, height=21, width=75, anchor=CENTER)
+
+	quadBtn = Button(root, text = "Quadratics", command = quad, bg="#6c86cf", font="Arial 7", anchor = CENTER)
+	quadBtn.pack()
+	quadBtn.place(x=175, y=215, height=21, width=75, anchor=CENTER)
+
+	multiBtn = Button(root, text = "Multiplication", command = multiplication, bg="#c3cff6", font="Arial 7", anchor = CENTER)
+	multiBtn.pack()
+	multiBtn.place(x=187, y=425, height=21, width=75, anchor=CENTER)
+
+	exponentsBtn = Button(root, text = "Exponents", command = exponents, bg="#859fe8", font="Arial 7", anchor = CENTER)
+	exponentsBtn.pack()
+	exponentsBtn.place(x=70, y=410, height=21, width=75, anchor=CENTER)
+
+	# factoringBtn = Button(root, text = "Factoring", command = exponents, bg="#c3cff6", font="Arial 7", anchor = CENTER)
+	# factoringBtn.pack()
+	# factoringBtn.place(x=215, y=120, height=21, width=70, anchor=CENTER)
+
+	rootsBtn = Button(root, text = "Roots", command = roots, bg="#a5b8ed", font="Arial 7", anchor = CENTER)
+	rootsBtn.pack()
+	rootsBtn.place(x=80, y=280, height=21, width=75, anchor=CENTER)
+
 def trig():
-	global answer, answerWindow, triga
+	global answer, answerWindow, triga, point, enterBtn, retryBtn, retryInt
+
+	if point < 3:
+		s.delete("all")
+		quadBtn.destroy()
+		trigBtn.destroy()
+		startBtn.destroy()
+		multiBtn.destroy()
+		exponentsBtn.destroy()
+		rootsBtn.destroy()
+
+		if retryInt == 1:
+			retryBtn.destroy()
+
+		trigquestions = ["In triangle PQR, PR = 20 cm, \n< Q = 90°, < R = 41°. \nFind RQ to the nearest cm", "From the top of a tower, the \nangle of depression to the tip \nof the tower's shadow is 88°. \nThe shadow is 19.5m long. \nHow tall is the tower?\n(nearest m)", "A road has a 10% gradient,\nmeaning it rises 10m for \nevery 100m of horizontal \ndistance. What is the angle of \ninclination of the road, \nto the nearest degree?", "A 25 foot tall flagpole casts a \n42 foot shadow. What is the \nangle that the sun hits the \nflagpole?(Round to nearest \nangle)"]
+		triganswers = [13, 558, 6, 59]
+		randomnum = randint(0, 3)
+		trigq = trigquestions[randomnum]
+		triga = triganswers[randomnum]
 	
-	s.delete("all")
-	trigBtn.destroy()
+		treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
+		question = s.create_text(64, 275, text = trigq, anchor = NW, fill = "white", font = "arial 7")
 	
-	trigquestions = ["In triangle PQR, PR = 20 cm, \n< Q = 90°, < R = 41°. \nFind RQ to the nearest cm", "From the top of a tower, the \nangle of depression to the tip \nof the tower's shadow is 88°. \nThe shadow is 19.5m long. \nHow tall is the tower?\n(nearest m)", "A road has a 10% gradient,\nmeaning it rises 10m for \nevery 100m of horizontal \ndistance. What is the angle of \ninclination of the road, \nto the nearest degree?", "A 25 foot tall flagpole casts a \n42 foot shadow. What is the \nangle that the sun hits the \nflagpole?(Round to nearest \nangle)"]
-	triganswers = [13, 558, 6, 59]
-	randomnum = randint(0, 3)
-	trigq = trigquestions[randomnum]
-	triga = triganswers[randomnum]
+		treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
+	
+		answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
+		answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
+	
+		def check():
+			global answer, answerWindow, triga, point, retryInt
+			answerUser = answer.get()
+			
+			if int(answerUser) == triga:
+				point += 1
+				enterBtn.destroy()
+				trig()
+			
+		enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
+		enterBtn.pack()
+		enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
 
-	treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
-	question = s.create_text(64, 275, text = trigq, anchor = NW, fill = "white", font = "arial 7")
-
-	treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
-
-	answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
-	answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
-
-	def check():
-		global answer, answerWindow, triga
-		answerUser = answer.get()
-		
-		if int(answerUser) == triga:
-			wave2 = s.create_polygon(-100, 350, 0, 600, 300, 480, 350, 330, 75, 450, smooth = TRUE, fill = "#627ABD")
-		
-	enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
-	enterBtn.pack()
-	enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
+	else:
+		enterBtn.destroy()
+		retry()
 
 def quad():
-	return
+	global answer, answerWindow, quada, quadaa ,point, enterBtn, retryBtn, retryInt
+
+	if point < 3:
+		s.delete("all")
+		quadBtn.destroy()
+		trigBtn.destroy()
+		startBtn.destroy()
+		multiBtn.destroy()
+		exponentsBtn.destroy()
+		rootsBtn.destroy()
+
+		if retryInt == 1:
+			retryBtn.destroy()
+
+		
+		quadquestions = ["Two consecutive integers are \nadded. The square of their sum is 361. What is the sum of the integers", "The area of a rectangle is \n36cm2. The side lenghts are (x-5) and (x). What is one of the sides dimensions?", "If -3 is one root of the equation 3x^2 + mx + 3 = 0, what is the value of m.", "a^2 - 8a + 16 = 0"]
+		quadanswers = [19, 4, 10, 4]
+		quadanswers2 = [19, 9, 10, 4]
+		quadrandomnum = randint(0, 3)
+		quadq = quadquestions[quadrandomnum]
+		quada = quadanswers[quadrandomnum]
+		quadaa = quadanswers2[quadrandomnum]
+	
+		treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
+		question = s.create_text(64, 275, text = quadq, anchor = NW, fill = "white", font = "arial 7")
+	
+		treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
+	
+		answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
+		answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
+	
+		def check():
+			global answer, answerWindow, quadq, point, retryInt
+			answerUser = answer.get()
+			
+			if int(answerUser) == quada or int(answerUser) == quadaa:
+				point += 1
+				enterBtn.destroy()
+				quad()
+
+	
+		enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
+		enterBtn.pack()
+		enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
+
+	else:
+		enterBtn.destroy()
+		retry()
+
+	
+def multiplication():
+	global answer, answerWindow, point, enterBtn, retryBtn, multiBtn, multiplyanswer, retryInt
+
+	if point < 3:
+		s.delete("all")
+		quadBtn.destroy()
+		trigBtn.destroy()
+		startBtn.destroy()
+		multiBtn.destroy()
+		exponentsBtn.destroy()
+		rootsBtn.destroy()
+
+		if retryInt == 1:
+			retryBtn.destroy()
+
+		a = randint(-100, 200)
+		b = randint(-100, 200)
+
+		multiplyanswer = a * b
+
+	
+		treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
+		question = s.create_text(70, 300, text = "(" + (str(a) + ") * (" + str(b)) + ")", anchor = NW, fill = "white", font = "arial 15")
+	
+		treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
+	
+		answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
+		answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
+	
+		def check():
+			global answer, answerWindow, multiplyanswer, point, multiBtn, retryInt
+			answerUser = answer.get()
+			
+			if int(answerUser) == multiplyanswer:
+				point += 1
+				enterBtn.destroy()
+				multiplication()
+
+	
+		enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
+		enterBtn.pack()
+		enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
+
+	else:
+		enterBtn.destroy()
+		retry()
+
 def exponents():
-	return
+	global answer, answerWindow, point, enterBtn, retryBtn, exponentsBtn, exponentans, retryInt
 
-'''
-replRatioBox = Entry(root, font=("Helvetica", 25), width=17, fg="#000000", borderwidth=0)
-replRatioBox.insert(0, "ratio (ex: 1:1 or N/A)")
-replRatioBoxWindow = s.create_window(110, 820, anchor="nw", window=replRatioBox)
-'''
+	if point < 3:
+		s.delete("all")
+		quadBtn.destroy()
+		trigBtn.destroy()
+		startBtn.destroy()
+		multiBtn.destroy()
+		exponentsBtn.destroy()
+		rootsBtn.destroy()
 
-spacing = 25
+		if retryInt == 1:
+			retryBtn.destroy()
 
-for x in range(0, 800, spacing): 
-	s.create_line(x, 25, x, 600, fill="white")
-	s.create_text(x, 5, text=str(x), font="Times 9", anchor = N, fill = "black")
+		a = randint(-10, 10)
+		b = randint(0, 6)
 
-for y in range(0, 600, spacing):
-	s.create_line(25, y, 800, y, fill="white")
-	s.create_text(5, y, text=str(y), font="Times 9", anchor = W, fill = "black")
+		exponentans = a ** b
+
+	
+		treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
+		question1 = s.create_text(160, 300, text = "(" + str(a) + ")", anchor = NE, fill = "white", font = "arial 15")
+		question2 = s.create_text(160, 300, text = str(b), anchor = NW, fill = "white", font = "arial 10")
+	
+		treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
+	
+		answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
+		answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
+	
+		def check():
+			global answer, answerWindow, exponentans, point, exponentsBtn, retryInt
+			answerUser = answer.get()
+			
+			if int(answerUser) == exponentans:
+				point += 1
+				enterBtn.destroy()
+				exponents()
+
+	
+		enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
+		enterBtn.pack()
+		enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
+
+	else:
+		enterBtn.destroy()
+		retry()
+
+def roots():
+	global answer, answerWindow, point, enterBtn, retryBtn, rootsBtn, retryInt, o
+
+	if point < 3:
+		s.delete("all")
+		quadBtn.destroy()
+		trigBtn.destroy()
+		startBtn.destroy()
+		multiBtn.destroy()
+		exponentsBtn.destroy()
+		rootsBtn.destroy()
+
+		if retryInt == 1:
+			retryBtn.destroy()
+
+		o = randint(0, 10)
+
+		squareroot = o*o
+
+	
+		treasurechestbot = s.create_polygon(50, 260, 220, 260, 220, 360, 50, 360, width = 15, fill = "#75421d", outline = "#fedd54")
+		question = s.create_text(70, 300, text = "√" +  str(squareroot), anchor = NW, fill = "white", font = "arial 15")
+	
+		treasurechesttop = s.create_polygon(50, 260, 220, 260, 190, 210, 80, 210, width = 15, fill = "#75421d", outline = "#fedd54")
+	
+		answer = Entry(root, font=("Helvetica", 7), width=17, fg="#000000", borderwidth=0)
+		answerWindow = s.create_window(80, 230, anchor="nw", window=answer)
+	
+		def check():
+			global answer, answerWindow, o, point, rootsBtn, retryInt
+			answerUser = answer.get()
+			
+			if int(answerUser) == o:
+				point += 1
+				enterBtn.destroy()
+				roots()
+
+			
+
+		enterBtn = Button(root, text = "🔍", command = check, bg="white", font="Helvetica 7", anchor = NE)
+		enterBtn.pack()
+		enterBtn.place(x=180, y=230, height = 16, width = 16, anchor = NW)
+
+	else:
+		enterBtn.destroy()
+		retry()
+
+def retry():
+	global retryBtn, retryInt
+	
+	s.delete("all")
+	s.create_image(0, 0, image = (retryBg), anchor = NW)
+	retryBtn = Button(root, text = "Retry?", command = game, bg="white", font="Helvetica 10", anchor = CENTER)
+	retryBtn.pack()
+	retryBtn.place(x=140, y=420, height = 30, width = 170, anchor = CENTER)
+	retryInt = 1
 
 home()
 s.update()
